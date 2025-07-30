@@ -10,7 +10,7 @@ export const realTimeCryptoQuote = async (req, res) => {
         const data = await getRealTimeCryptoQuote(symbol)
         res.json(data)
     } catch (error) {
-        res.status(500).json({ error: error.message || 'Failed to fetch real-time crypto data' })
+        res.status(500).json({ error: error.message || 'Failed to fetch real-time crypto quote' })
     }
 }
 
@@ -46,6 +46,6 @@ export const cryptoHistoricalChange = async (req, res) => {
 
         res.json(data);
     } catch (error) {
-        res.status(500).json({ error: error.message || 'Failed to fetch crypto price change' });
+        res.status(500).json({ error: error.message || 'Failed to fetch crypto historical change' });
     }
 }

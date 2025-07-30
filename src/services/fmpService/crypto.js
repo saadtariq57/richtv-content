@@ -3,12 +3,12 @@ import { FMP_API_KEY } from '../../config/env.js'
 import { calculateDateRange } from '../../utils/calculateDateRange.js'
 
 export const getRealTimeCryptoQuote = async (symbol) => {
-    const response = await apiClient.get(`/quote?symbol=${symbol}&apikey=${FMP_API_KEY}`)
+    const response = await apiClient.get(`/stable/quote?symbol=${symbol}&apikey=${FMP_API_KEY}`)
     return response.data
 }
 
 export const getCryptoHistoricalChangeByDate = async (symbol, from, to) => {
-    const response = await apiClient.get(`/historical-price-eod/full?symbol=${symbol}&from=${from}&to=${to}&apikey=${FMP_API_KEY}`)
+    const response = await apiClient.get(`/stable/historical-price-eod/full?symbol=${symbol}&from=${from}&to=${to}&apikey=${FMP_API_KEY}`)
     return response.data
 }
 
@@ -17,14 +17,14 @@ export const getCryptoHistoricalChangeByDays = async (symbol, days) => {
     const { from, to } = calculateDateRange(days);
 
     const response = await apiClient.get(
-        `/historical-price-eod/full?symbol=${symbol}&from=${from}&to=${to}&apikey=${FMP_API_KEY}`
+        `/stable/historical-price-eod/full?symbol=${symbol}&from=${from}&to=${to}&apikey=${FMP_API_KEY}`
     );
 
     return response.data;
 }
 
 export const getCryptoHistoricalChangeByOneHour = async (symbol, days, from, to) => {
-    let url = `/historical-chart/1hour?symbol=${symbol}&apikey=${FMP_API_KEY}`;
+    let url = `/stable/historical-chart/1hour?symbol=${symbol}&apikey=${FMP_API_KEY}`;
     
     if (days) {
         // Calculate date range if days is provided
