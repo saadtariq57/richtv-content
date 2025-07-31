@@ -4,7 +4,7 @@ import {
     realTimeCommodityQuote, 
     commodityHistoricalDailyPrices,
     commodityHistoricalByHours
-} from '../controllers/commoditiesController.js'
+} from '../controllers/commodities.controller.js'
 
 const router = express.Router()
 
