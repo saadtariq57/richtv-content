@@ -4,13 +4,34 @@ import { FMP_API_KEY } from '../../config/env.js'
 import { calculateDateRange } from '../../utils/calculateDateRange.js'
 import { formatDate, formatDateTimeEST } from '../../utils/DateUtils.js';
 
-// Get real-time quote for a specific index symbol
+/**
+ * Fetches real-time quote data for a market index
+ * @function getRealTimeIndexQuote
+ * @param {string} symbol - The index symbol (e.g., '^GSPC' for S&P 500, '^DJI' for Dow Jones)
+ * @returns {Promise<Object>} Real-time index quote data
+ * @throws {Error} When API call fails or symbol is invalid
+ * @example
+ * const quote = await getRealTimeIndexQuote('^GSPC');
+ * // Returns: { symbol: '^GSPC', price: 4500, change: 25.5, ... }
+ */
 export const getRealTimeIndexQuote = async (symbol) => {
     const response = await apiClient.get(`/stable/quote?symbol=${symbol}&apikey=${FMP_API_KEY}`)
     return response.data
 }
 
-// Get historical daily prices for an index
+/**
+ * Fetches historical daily price data for a market index
+ * @function getIndexHistoricalDailyPrices
+ * @param {string} symbol - The index symbol (e.g., '^GSPC', '^DJI')
+ * @param {number} [days] - Number of days to fetch (if provided, overrides from/to)
+ * @param {string} [from] - Start date in YYYY-MM-DD format
+ * @param {string} [to] - End date in YYYY-MM-DD format
+ * @returns {Promise<Array>} Array of historical daily price data
+ * @throws {Error} When API call fails or parameters are invalid
+ * @example
+ * const prices = await getIndexHistoricalDailyPrices('^GSPC', 30);
+ * // Returns: [{ date: '2024-01-01', open: 4500, close: 4510, ... }, ...]
+ */
 export const getIndexHistoricalDailyPrices = async (symbol, days, from, to) => {
     let url = `/stable/historical-price-eod/full?symbol=${symbol}&apikey=${FMP_API_KEY}`
     
@@ -25,7 +46,17 @@ export const getIndexHistoricalDailyPrices = async (symbol, days, from, to) => {
     return response.data
 }
 
-// Get historical hourly data for last N hours (EST timezone)
+/**
+ * Fetches historical hourly data for a market index in EST timezone
+ * @function getIndexHistoricalByHours
+ * @param {string} symbol - The index symbol (e.g., '^GSPC', '^DJI')
+ * @param {number} hours - Number of hours to fetch (must be positive)
+ * @returns {Promise<Array>} Array of historical hourly data filtered by EST timezone
+ * @throws {Error} When hours parameter is invalid or API call fails
+ * @example
+ * const hourlyData = await getIndexHistoricalByHours('^GSPC', 24);
+ * // Returns: [{ date: '2024-01-01 10:00:00', open: 4500, close: 4510, ... }, ...]
+ */
 export const getIndexHistoricalByHours = async (symbol, hours) => {
     if (!hours || hours <= 0) {
         throw new Error('Hours parameter must be a positive number');

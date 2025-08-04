@@ -1,5 +1,5 @@
 import express from 'express'
-import { realTimeStockQuote, stockPriceChangeByOneDay, stockPriceChangeByOneWeek, stockPriceChangeByOneMonth, stockPriceChangeBySixMonth, stockPriceChangeByOneYear, stockPriceChanges, lastHourStockData, mostActiveStocks, biggestGainerStocks, biggestLoserStocks, stockHistoricalDailyPrices, stockHistoricalByHours } from '../controllers/stock.controller.js'
+import { realTimeStockQuote, stockPriceChangeByOneDay, stockPriceChangeByOneWeek, stockPriceChangeByOneMonth, stockPriceChangeBySixMonth, stockPriceChangeByOneYear, stockPriceChanges, lastHourStockData, mostActiveStocks, biggestGainerStocks, biggestLoserStocks, stockHistoricalDailyPrices, stockHistoricalByHours } from '../../controllers/stocks/stock.controller.js'
 
 const router = express.Router()
 

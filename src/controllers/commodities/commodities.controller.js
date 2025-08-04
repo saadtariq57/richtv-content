@@ -3,7 +3,7 @@ import {
     getRealTimeCommodityQuote, 
     getCommodityHistoricalDailyPrices,
     getCommodityHistoricalByHours
-} from '../services/fmpService/commodities.js'
+} from '../../services/fmpService/commodities.js'
 
 // Controller to get real-time quotes for all commodities
 export const realTimeAllCommoditiesQuote = async (req, res) => {

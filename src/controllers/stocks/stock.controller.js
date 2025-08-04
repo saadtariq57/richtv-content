@@ -12,7 +12,7 @@ import {
     getBiggestLoserStocks,
     getStockHistoricalDailyPrices,
     getStockHistoricalByHours
-} from '../services/fmpService/stocks.js'
+} from '../../services/fmpService/stocks/stocks.js'
 
 export const realTimeStockQuote = async (req, res) => {
   try {
@@ -124,21 +124,7 @@ export const biggestLoserStocks = async (req, res) => {
 export const stockHistoricalDailyPrices = async (req, res) => {
     try {
         const { symbol, days, from, to } = req.query
-        
-        if (!symbol) {
-            return res.status(400).json({ error: 'Symbol is required' })
-        }
-        
-        if (!days && !(from && to)) {
-            return res.status(400).json({ error: 'Either days or from/to date range is required' })
-        }
-        
         const data = await getStockHistoricalDailyPrices(symbol, days, from, to)
-        
-        if (!data || (Array.isArray(data) && data.length === 0)) {
-            return res.status(404).json({ error: 'No historical data found for the given parameters' })
-        }
-        
         res.json(data)
     } catch (err) {
         res.status(500).json({ error: err.message || 'Failed to fetch stock historical daily prices' })
@@ -148,28 +134,9 @@ export const stockHistoricalDailyPrices = async (req, res) => {
 export const stockHistoricalByHours = async (req, res) => {
     try {
         const { symbol, hours } = req.query
-        
-        if (!symbol) {
-            return res.status(400).json({ error: 'Symbol is required' })
-        }
-        
-        if (!hours) {
-            return res.status(400).json({ error: 'Hours parameter is required' })
-        }
-        
-        const hoursNum = parseInt(hours, 10)
-        if (isNaN(hoursNum) || hoursNum <= 0) {
-            return res.status(400).json({ error: 'Hours must be a positive number' })
-        }
-        
-        const data = await getStockHistoricalByHours(symbol, hoursNum)
-        
-        if (!data || (Array.isArray(data) && data.length === 0)) {
-            return res.status(404).json({ error: 'No historical data found for the given parameters' })
-        }
-        
+        const data = await getStockHistoricalByHours(symbol, hours)
         res.json(data)
     } catch (err) {
         res.status(500).json({ error: err.message || 'Failed to fetch stock historical data by hours' })
     }
-}
+} 

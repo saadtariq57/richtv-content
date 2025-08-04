@@ -3,19 +3,48 @@ import { FMP_API_KEY } from '../../config/env.js'
 import { calculateDateRange } from '../../utils/calculateDateRange.js'
 import { formatDate, formatDateTimeEST } from '../../utils/DateUtils.js';
 
-// Get real-time quotes for all commodities
+/**
+ * Fetches real-time quotes for all available commodities
+ * @function getRealTimeAllCommoditiesQuote
+ * @returns {Promise<Array>} Array of real-time commodity quotes
+ * @throws {Error} When API call fails or response is invalid
+ * @example
+ * const commodities = await getRealTimeAllCommoditiesQuote();
+ * // Returns: [{ symbol: 'GCUSD', price: 2000, change: 1.5, ... }, ...]
+ */
 export const getRealTimeAllCommoditiesQuote = async () => {
     const response = await apiClient.get(`/api/v3/quotes/commodity?apikey=${FMP_API_KEY}`);
     return response.data;
 }
 
-// Get real-time quote for a specific commodity symbol
+/**
+ * Fetches real-time quote for a specific commodity
+ * @function getRealTimeCommodityQuote
+ * @param {string} symbol - The commodity symbol (e.g., 'GCUSD' for Gold, 'CLUSD' for Crude Oil)
+ * @returns {Promise<Object>} Real-time commodity quote data
+ * @throws {Error} When API call fails or symbol is invalid
+ * @example
+ * const quote = await getRealTimeCommodityQuote('GCUSD');
+ * // Returns: { symbol: 'GCUSD', price: 2000, change: 1.5, ... }
+ */
 export const getRealTimeCommodityQuote = async (symbol) => {
     const response = await apiClient.get(`/api/v3/quote/${symbol}?apikey=${FMP_API_KEY}`);
     return response.data;
 }
 
-// Get historical daily prices for a commodity
+/**
+ * Fetches historical daily price data for a commodity
+ * @function getCommodityHistoricalDailyPrices
+ * @param {string} symbol - The commodity symbol (e.g., 'GCUSD', 'CLUSD')
+ * @param {number} [days] - Number of days to fetch (if provided, overrides from/to)
+ * @param {string} [from] - Start date in YYYY-MM-DD format
+ * @param {string} [to] - End date in YYYY-MM-DD format
+ * @returns {Promise<Object>} Historical daily price data object
+ * @throws {Error} When API call fails or parameters are invalid
+ * @example
+ * const prices = await getCommodityHistoricalDailyPrices('GCUSD', 30);
+ * // Returns: { symbol: 'GCUSD', historical: [{ date: '2024-01-01', open: 2000, close: 2010, ... }, ...] }
+ */
 export const getCommodityHistoricalDailyPrices = async (symbol, days, from, to) => {
     let url = `/api/v3/historical-price-full/${symbol}?apikey=${FMP_API_KEY}`
    
@@ -32,7 +61,17 @@ export const getCommodityHistoricalDailyPrices = async (symbol, days, from, to) 
     return response.data
 }
 
-// Get historical hourly data for last N hours (EST timezone)
+/**
+ * Fetches historical hourly data for a commodity in EST timezone
+ * @function getCommodityHistoricalByHours
+ * @param {string} symbol - The commodity symbol (e.g., 'GCUSD', 'CLUSD')
+ * @param {number} hours - Number of hours to fetch (must be positive)
+ * @returns {Promise<Array>} Array of historical hourly data filtered by EST timezone
+ * @throws {Error} When hours parameter is invalid or API call fails
+ * @example
+ * const hourlyData = await getCommodityHistoricalByHours('GCUSD', 24);
+ * // Returns: [{ date: '2024-01-01 10:00:00', open: 2000, close: 2010, ... }, ...]
+ */
 export const getCommodityHistoricalByHours = async (symbol, hours) => {
     if (!hours || hours <= 0) {
         throw new Error('Hours parameter must be a positive number');
