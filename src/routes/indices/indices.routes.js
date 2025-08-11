@@ -3,7 +3,7 @@ import {
     realTimeIndexQuote, 
     indexHistoricalDataByDays,
     indexHistoricalDataByHours
-} from '../controllers/indices.controller.js';
+} from '../../controllers/indices/indices.controller.js';
 
 const router = express.Router();
 

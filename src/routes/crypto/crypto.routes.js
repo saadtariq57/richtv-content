@@ -3,7 +3,7 @@ import {
     realTimeCryptoQuote, 
     cryptoHistoricalDataByDays,
     cryptoHistoricalDataByHours
-} from '../controllers/crypto.controller.js';
+} from '../../controllers/crypto/crypto.controller.js';
 
 const router = express.Router();
 

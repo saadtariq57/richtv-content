@@ -1,64 +1,43 @@
 import { 
-    getRealTimeAllCommoditiesQuote, 
-    getRealTimeCommodityQuote, 
-    getCommodityHistoricalDailyPrices,
-    getCommodityHistoricalByHours
-} from '../../services/fmpService/commodities.js'
+    getRealTimeCryptoQuote, 
+    getCryptoHistoricalDailyPrices, 
+    getCryptoHistoricalByHours 
+} from '../../services/fmpService/crypto.js'
 
-// Controller to get real-time quotes for all commodities
-export const realTimeAllCommoditiesQuote = async (req, res) => {
+// Controller to get real-time crypto data
+export const realTimeCryptoQuote = async (req, res) => {
     try {
-        const data = await getRealTimeAllCommoditiesQuote();
-        res.status(200).json({
-            success: true,
-            message: 'Successfully retrieved real-time all commodities quote',
-            data: data
-        });
-    } catch (error) {
-        console.error('❌ Controller Error - Real Time All Commodities Quote:', error.message)
-        res.status(500).json({
-            success: false,
-            message: 'Failed to fetch real-time all commodities quote',
-            error: error.message,
-            data: null
-        });
-    }
-}
-
-// Controller to get real-time quote for a specific commodity
-export const realTimeCommodityQuote = async (req, res) => {
-    try {
-        const { symbol } = req.query;
+        const { symbol } = req.query
         if (!symbol) {
             return res.status(400).json({
                 success: false,
                 message: 'Symbol is required',
                 error: 'Missing required parameter: symbol',
                 data: null
-            });
+            })
         }
-        const data = await getRealTimeCommodityQuote(symbol);
+        const data = await getRealTimeCryptoQuote(symbol)
         res.status(200).json({
             success: true,
-            message: 'Successfully retrieved real-time commodity quote',
+            message: 'Successfully retrieved real-time crypto quote',
             data: data
-        });
+        })
     } catch (error) {
-        console.error('❌ Controller Error - Real Time Commodity Quote:', error.message)
+        console.error('❌ Controller Error - Real Time Crypto Quote:', error.message)
         res.status(500).json({
             success: false,
-            message: 'Failed to fetch real-time commodity quote',
+            message: 'Failed to fetch real-time crypto quote',
             error: error.message,
             data: null
-        });
+        })
     }
 }
 
-// Controller to get commodity historical daily prices (by days or by date range)
-export const commodityHistoricalDailyPrices = async (req, res) => {
+// Controller to get crypto historical daily data (by days or by date range)
+export const cryptoHistoricalDataByDays = async (req, res) => {
     try {
         const { symbol, days, from, to } = req.query;
-      
+        
         if (!symbol) {
             return res.status(400).json({
                 success: false,
@@ -77,7 +56,7 @@ export const commodityHistoricalDailyPrices = async (req, res) => {
             });
         }
         
-        const data = await getCommodityHistoricalDailyPrices(symbol, days, from, to);
+        const data = await getCryptoHistoricalDailyPrices(symbol, days, from, to);
         
         if (!data || (Array.isArray(data) && data.length === 0)) {
             return res.status(404).json({
@@ -90,22 +69,22 @@ export const commodityHistoricalDailyPrices = async (req, res) => {
         
         res.status(200).json({
             success: true,
-            message: 'Successfully retrieved commodity historical daily prices',
+            message: 'Successfully retrieved crypto historical daily data',
             data: data
         });
     } catch (error) {
-        console.error('❌ Controller Error - Commodity Historical Daily Prices:', error.message)
+        console.error('❌ Controller Error - Crypto Historical Data By Days:', error.message)
         res.status(500).json({
             success: false,
-            message: 'Failed to fetch commodity historical daily prices',
+            message: 'Failed to fetch crypto historical daily data',
             error: error.message,
             data: null
         });
     }
 }
 
-// Controller to get commodity historical data by hours
-export const commodityHistoricalByHours = async (req, res) => {
+// Controller to get crypto historical data by hours
+export const cryptoHistoricalDataByHours = async (req, res) => {
     try {
         const { symbol, hours } = req.query;
         
@@ -137,7 +116,7 @@ export const commodityHistoricalByHours = async (req, res) => {
             });
         }
         
-        const data = await getCommodityHistoricalByHours(symbol, hoursNum);
+        const data = await getCryptoHistoricalByHours(symbol, hoursNum);
         
         if (!data || (Array.isArray(data) && data.length === 0)) {
             return res.status(404).json({
@@ -150,18 +129,16 @@ export const commodityHistoricalByHours = async (req, res) => {
         
         res.status(200).json({
             success: true,
-            message: 'Successfully retrieved commodity historical data by hours',
+            message: 'Successfully retrieved crypto historical data by hours',
             data: data
         });
     } catch (error) {
-        console.error('❌ Controller Error - Commodity Historical By Hours:', error.message)
+        console.error('❌ Controller Error - Crypto Historical Data By Hours:', error.message)
         res.status(500).json({
             success: false,
-            message: 'Failed to fetch commodity historical data by hours',
+            message: 'Failed to fetch crypto historical data by hours',
             error: error.message,
             data: null
         });
     }
 }
-
-

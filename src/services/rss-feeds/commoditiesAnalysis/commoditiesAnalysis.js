@@ -1,4 +1,4 @@
-import { processRSSFeed } from '../../../utils/rssProcessor.js';
+import { processRSSFeed } from '../../../utils/rssProcessor/commoditiesRssProcessor.js';
 
 // RSS Feed URLs for different commodities analysis types
 const RSS_FEEDS = {

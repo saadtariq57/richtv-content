@@ -14,14 +14,15 @@ function extractArticleContent(html) {
   const paragraphs = [];
 
   $('p').each((i, el) => {
-    const hasClass = $(el).attr('class');
     const text = $(el).text().trim();
-    if (!hasClass && text) {
+
+    // Filter out junk, but don't discard based on class/attributes
+    if (text.length > 40 && !text.match(/^\s*(advertisement|subscribe|click here)/i)) {
       paragraphs.push(text);
     }
   });
 
-  return paragraphs.slice(0, 5).join('\n\n'); // First 5 clean paragraphs
+  return paragraphs.slice(0, 8).join('\n\n'); // Get first ~8 good paragraphs
 }
 
 function sanitizeFilename(title) {
