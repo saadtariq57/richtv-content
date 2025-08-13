@@ -2,6 +2,7 @@ import { apiClient } from '../../utils/apiClient.js'
 import { FMP_API_KEY } from '../../config/env.js'
 import { getTodayDate } from '../../utils/DateUtils.js';
 import { trustedSites } from '../../utils/trustedSites.js';
+import { calculateDateRange } from '../../utils/calculateDateRange.js'
 
 /**
  * Fetches today's major financial headlines from trusted news sources
@@ -57,4 +58,37 @@ export const getOneRandomTodayMajorFinancialHeadlines = async () => {
     const randomOne = filteredByTrustedSites.sort(() => Math.random() - 0.5).slice(0, 1);
 
     return randomOne;
+}
+
+/**
+ * Fetches FMP Articles within the last N days
+ * @param {number} days
+ * @returns {Promise<Array>}
+ */
+export const getFmpArticlesByDays = async (days) => {
+    const { from, to } = calculateDateRange(days)
+    const page = 0
+    const limit = 200
+    const url = `/stable/fmp-articles?page=${page}&limit=${limit}&apikey=${FMP_API_KEY}`
+    const response = await apiClient.get(url)
+
+    const fromTs = `${from} 00:00:00`
+    const toTs = `${to} 23:59:59`
+    const filtered = Array.isArray(response.data)
+        ? response.data.filter(item => item.date >= fromTs && item.date <= toTs)
+        : []
+
+    return filtered
+}
+
+/**
+ * Fetches random FMP Articles within the last N days
+ * @param {number} days
+ * @param {number} count
+ * @returns {Promise<Array>}
+ */
+export const getRandomFmpArticlesByDays = async (days, count) => {
+    const all = await getFmpArticlesByDays(days)
+    if (!Array.isArray(all) || all.length === 0) return []
+    return all.slice().sort(() => Math.random() - 0.5).slice(0, count)
 }

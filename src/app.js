@@ -9,6 +9,7 @@ import { commoditiesAnalysisRoutes } from './routes/commodities/commoditiesAnaly
 import { indicesAnalysisRoutes } from './routes/indices/indicesAnalysis.route.js'
 import { cryptoAnalysisRoutes } from './routes/crypto/cryptoAnalysis.route.js'
 import { sectorsRoutes } from './routes/sectors/sectors.route.js'
+import { macroIndicatorsRoutes } from './routes/macroIndicators/macroIndicators.route.js'
 
 const app = express()
 
@@ -25,6 +26,8 @@ app.use('/api/v1/indicesAnalysis', indicesAnalysisRoutes)
 app.use('/api/v1/cryptoAnalysis', cryptoAnalysisRoutes)
 
 app.use('/api/v1/sectors', sectorsRoutes)
+
+app.use('/api/v1/macroIndicators', macroIndicatorsRoutes)
 
 
 export default app
