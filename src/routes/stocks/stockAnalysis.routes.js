@@ -11,7 +11,6 @@ import {
   futuresAnalysis,
   fundamentalAnalysis,
   technicalAnalysis,
-  allStockAnalysis,
   availableCategories
 } from '../../controllers/stocks/stockAnalysis.controller.js'
 
