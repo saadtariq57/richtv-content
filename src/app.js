@@ -1,4 +1,5 @@
 import express from 'express'
+import { RICHTV_CONTENT_API_TOKEN } from './config/env.js'
 import { stockRoutes } from './routes/stocks/stock.routes.js'
 import { cryptoRoutes } from './routes/crypto/crypto.routes.js'
 import { commoditiesRoutes } from './routes/commodities/commodities.route.js'
@@ -14,6 +15,25 @@ import { macroIndicatorsRoutes } from './routes/macroIndicators/macroIndicators.
 const app = express()
 
 app.use(express.json())
+
+// Public health check
+app.get('/', (req, res) => {
+  res.status(200).json({ ok: true })
+})
+
+// Simple token auth for all API routes
+function requireApiToken(req, res, next) {
+  const headerToken = req.headers['x-richtv-content-api-key'] || req.headers['x-richtv-content-api-key'.toLowerCase()] || req.headers['authorization']?.replace('Bearer ', '')
+  if (!RICHTV_CONTENT_API_TOKEN) {
+    return res.status(500).json({ error: 'API token not configured' })
+  }
+  if (headerToken !== RICHTV_CONTENT_API_TOKEN) {
+    return res.status(401).json({ error: 'Unauthorized' })
+  }
+  next()
+}
+
+app.use('/api', requireApiToken)
 app.use('/api/v1/stock', stockRoutes)
 app.use('/api/v1/crypto', cryptoRoutes)
 app.use('/api/v1/commodity', commoditiesRoutes)
